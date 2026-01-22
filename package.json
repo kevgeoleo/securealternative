@@ -1,0 +1,27 @@
+{
+  "name": "securealternative",
+  "version": "1.0.0",
+  "description": "Provide secure alternatives for functions that can be effected by prototype pollution",
+  "keywords": [
+    "security",
+    "prototype-pollution",
+    "poc",
+    "prototype",
+    "pollution"
+  ],
+  "homepage": "https://github.com/kevgeoleo/securealternative#readme",
+  "bugs": {
+    "url": "https://github.com/kevgeoleo/securealternative/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevgeoleo/securealternative.git"
+  },
+  "license": "MIT",
+  "author": "Kevin George Leo",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  }
+}
