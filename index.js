@@ -1,1 +1,6 @@
-console.log("hello world")
+// index.js
+const splitOnDot = require("./lib/splitOnDot");
+
+module.exports = {
+  splitOnDot,
+};
