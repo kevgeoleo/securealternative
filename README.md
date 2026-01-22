@@ -56,3 +56,34 @@ number — index of the element, or -1 if not found
 #### Throws
 
 TypeError if arr is not an array
+
+## StringSafeIndexOf
+
+#### Prototype
+
+StringSafeIndexOf(haystack: string, needle: string): number
+
+#### Description
+
+1. Searches for the first occurrence of a substring within a string.
+2. Does not rely on String.prototype.indexOf or any other built-in string methods.
+3. Performs a manual character-by-character comparison.
+4. Avoids implicit type coercion.
+5. Resistant to prototype pollution and method overrides.
+6. Safe to use in hostile or partially polluted JavaScript runtimes.
+
+#### Parameters
+
+| Name       | Type     | Required | Description                 |
+| ---------- | -------- | -------- | --------------------------- |
+| `haystack` | `string` | yes      | The string to search within |
+| `needle`   | `string` | yes      | The substring to search for |
+
+#### Returns
+
+number — the zero-based index of the first occurrence of string, or -1 if not found.
+
+#### Throws
+
+None
+(Invalid inputs are handled safely and return -1.)
