@@ -1,6 +1,8 @@
 // index.js
-const splitOnDot = require("./lib/splitOnDot");
+const ArraySafeIndexOf = require("./lib/ArraySafeIndexOf");
+const StringSplitOnChar = require("./lib/StringSplitOnChar");
 
 module.exports = {
-  splitOnDot,
+  StringSplitOnChar,
+  ArraySafeIndexOf,
 };
