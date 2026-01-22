@@ -81,7 +81,7 @@ StringSafeIndexOf(haystack: string, needle: string): number
 
 #### Returns
 
-number — the zero-based index of the first occurrence of string, or -1 if not found.
+number — the zero-based index of the first occurrence of needle, or -1 if not found.
 
 #### Throws
 
