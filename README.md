@@ -87,3 +87,21 @@ number — the zero-based index of the first occurrence of needle, or -1 if not 
 
 None
 (Invalid inputs are handled safely and return -1.)
+
+## RegexSafeTest (Alternative for RegExp.prototype.test)
+
+#### Prototype
+
+RegexSafeTest(regex: RegExp, input: string): boolean
+
+#### Description
+
+1. Tests whether a regular expression matches a string.
+2. Does not rely on `RegExp.prototype.test`, avoiding user-land overrides.
+3. Executes the match using the native V8 RegExp engine via a compiled Node.js addon.
+4. Validates inputs strictly before execution.
+5. Resistant to prototype pollution, method overrides, and monkey-patching of RegExp.prototype.
+
+#### Compatability info
+
+Currently works only for Node v24 (Active LTS version)
