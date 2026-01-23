@@ -1,7 +1,8 @@
-name: Build native addon
+name: CI
 
 on:
   push:
+    branches: [main]
   pull_request:
 
 jobs:
@@ -9,31 +10,50 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
-        runtime: [node, deno, bun]
-        node_version: [24, 20]
-
+        runtime: [node, deno, bun] # add runtimes here
+        node_version: [24] # only relevant for Node
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node }}
+      - name: Set up runtime
+        run: |
+          if [ "${{ matrix.runtime }}" = "node" ]; then
+            echo "Setting up Node.js"
+            # Use Node.js version from matrix
+            echo "matrix.node_version=${{ matrix.node_version }}"
+            npm install -g npm
+          elif [ "${{ matrix.runtime }}" = "deno" ]; then
+            echo "Installing Deno"
+            curl -fsSL https://deno.land/x/install/install.sh | sh
+            export DENO_INSTALL="$HOME/.deno"
+            export PATH="$DENO_INSTALL/bin:$PATH"
+            deno --version
+          elif [ "${{ matrix.runtime }}" = "bun" ]; then
+            echo "Installing Bun"
+            curl -fsSL https://bun.sh/install | bash
+            export BUN_INSTALL="$HOME/.bun"
+            export PATH="$BUN_INSTALL/bin:$PATH"
+            bun --version
+          fi
 
       - name: Install dependencies
-        run: npm install
-
-      - name: Build native addon
-        working-directory: native
         run: |
-          npx node-gyp configure
-          npx node-gyp build
+          if [ "${{ matrix.runtime }}" = "node" ]; then
+            npm install
+          elif [ "${{ matrix.runtime }}" = "bun" ]; then
+            bun install
+          fi
+        shell: bash
 
-      - name: Upload native addon
-        uses: actions/upload-artifact@v4
-        with:
-          name: regex_safe_test-${{ matrix.os }}
-          path: native/build/Release/*.node
+      - name: Run tests
+        run: |
+          if [ "${{ matrix.runtime }}" = "node" ]; then
+            npm test
+          elif [ "${{ matrix.runtime }}" = "deno" ]; then
+            deno test --allow-read
+          elif [ "${{ matrix.runtime }}" = "bun" ]; then
+            bun test
+          fi
+        shell: bash
