@@ -2,6 +2,7 @@ const assert = require("assert");
 const { StringSplitOnChar } = require("./index");
 const { ArraySafeIndexOf } = require("./index");
 const { StringSafeIndexOf } = require("./index");
+const RegexSafeTest = require("./lib/RegexSafeTest");
 
 // Test 1: default character (.)
 assert.deepStrictEqual(
@@ -162,3 +163,46 @@ console.assert(StringSafeIndexOf("hello", "ll") === 2);
 console.assert(StringSafeIndexOf("hello", "world") === -1);
 
 console.log("✅ All tests passed for StringSafeIndexOf")
+
+
+// ---------- Normal usage ----------
+assert.strictEqual(RegexSafeTest(/hello/, "hello world"), true, "Basic match failed");
+assert.strictEqual(RegexSafeTest(/hello/, "hell world"), false, "Non-match failed");
+assert.strictEqual(RegexSafeTest(/world$/, "hello world"), true, "Regex $ anchor failed");
+
+// ---------- Malicious input ----------
+const malicious = "hello');console.log('hacked');//";
+assert.strictEqual(
+  RegexSafeTest(/hello/, malicious),
+  true,
+  "Malicious string match failed"
+);
+assert.strictEqual(
+  RegexSafeTest(/notfound/, malicious),
+  false,
+  "Malicious string non-match failed"
+);
+
+// ---------- Prototype pollution ----------
+RegExp.prototype.test = () => "overridden!";
+assert.strictEqual(
+  RegexSafeTest(/hello/, "hello world"),
+  true,
+  "Prototype pollution not handled for match"
+);
+assert.strictEqual(
+  RegexSafeTest(/hello/, "hell world"),
+  false,
+  "Prototype pollution not handled for non-match"
+);
+
+// ---------- Invalid inputs ----------
+assert.strictEqual(RegexSafeTest("not a regex", "hello"), false, "Non-regex first param failed");
+assert.strictEqual(RegexSafeTest(/hello/, 123), false, "Non-string second param failed");
+assert.strictEqual(RegexSafeTest(null, null), false, "Both params invalid");
+
+// ---------- Empty regex / string ----------
+assert.strictEqual(RegexSafeTest(/.*/, ""), true, "Empty string match failed");
+assert.strictEqual(RegexSafeTest(/^$/, ""), true, "Empty string exact match failed");
+
+console.log("All RegexSafeTest tests passed ✅");
