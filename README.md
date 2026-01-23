@@ -105,3 +105,20 @@ RegexSafeTest(regex: RegExp, input: string): boolean
 #### Compatability info
 
 Currently works only for Node v24 (Active LTS version)
+
+#### Parameters
+
+| Name    | Type     | Required | Description                                 |
+| ------- | -------- | -------- | ------------------------------------------- |
+| `regex` | `RegExp` | yes      | Regular expression to test                  |
+| `input` | `string` | yes      | String against which the regex is evaluated |
+
+#### Returns
+
+boolean — true if the regular expression matches the input string, otherwise false.
+
+#### Throws
+
+1. TypeError if regex is not a RegExp object
+2. TypeError if input is not a string
+3. Error if the native addon is unavailable on the current platform
