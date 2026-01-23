@@ -14,8 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -25,10 +24,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install node-gyp
+        run: npm install -g node-gyp
+
       - name: Build native addon
         working-directory: native
         run: |
-          npm install -g node-gyp
           node-gyp clean
           node-gyp configure
           node-gyp build
