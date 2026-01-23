@@ -1,0 +1,12 @@
+# build artifacts
+native/build/
+build/
+*.o
+*.d
+*.mk
+
+# CI
+.github/
+
+# dev
+node_modules/
