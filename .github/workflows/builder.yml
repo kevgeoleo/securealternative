@@ -22,15 +22,31 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Install dependencies
-        run: npm install
+      # Windows-specific prerequisites for node-gyp
+      - name: Setup Windows Build Tools
+        if: runner.os == 'Windows'
+        uses: microsoft/setup-msbuild@v1
 
+      - name: Setup Python (Windows only)
+        if: runner.os == 'Windows'
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      # Clean install of dependencies
+      - name: Install dependencies
+        run: |
+          npm cache clean --force
+          npm ci
+
+      # Build native addon
       - name: Build native addon
         working-directory: native
         run: |
           npx node-gyp configure
           npx node-gyp build
 
+      # Upload built .node artifacts
       - name: Upload native addon
         uses: actions/upload-artifact@v4
         with:
