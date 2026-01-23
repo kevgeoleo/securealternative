@@ -9,7 +9,8 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
-        node: [24]
+        runtime: [node, deno, bun]
+        node_version: [24, 20]
 
     runs-on: ${{ matrix.os }}
 
