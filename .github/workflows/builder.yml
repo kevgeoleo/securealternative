@@ -26,10 +26,13 @@ jobs:
         run: npm install
 
       - name: Build native addon
-        run: npx node-gyp configure build
+        working-directory: native
+        run: |
+          npx node-gyp configure
+          npx node-gyp build
 
-      - name: Upload .node artifact
+      - name: Upload native addon
         uses: actions/upload-artifact@v4
         with:
           name: regex_safe_test-${{ matrix.os }}
-          path: build/Release/*.node
+          path: native/build/Release/*.node
