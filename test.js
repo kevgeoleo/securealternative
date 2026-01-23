@@ -205,4 +205,4 @@ assert.strictEqual(RegexSafeTest(null, null), false, "Both params invalid");
 assert.strictEqual(RegexSafeTest(/.*/, ""), true, "Empty string match failed");
 assert.strictEqual(RegexSafeTest(/^$/, ""), true, "Empty string exact match failed");
 
-console.log("All RegexSafeTest tests passed ✅");
+console.log("✅ All RegexSafeTest tests passed");
