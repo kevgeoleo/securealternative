@@ -17,36 +17,44 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      # Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
 
-      # Windows-specific prerequisites for node-gyp
-      - name: Setup Windows Build Tools
+      # Install build tools
+      - name: Setup build tools (Windows/Linux)
         if: runner.os == 'Windows'
         uses: microsoft/setup-msbuild@v1
 
-      - name: Setup Python (Windows only)
-        if: runner.os == 'Windows'
+      - name: Install Python (Windows/Linux)
         uses: actions/setup-python@v4
         with:
           python-version: "3.x"
 
+      - name: Install Linux build tools
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential python3 pkg-config
+
+      # Ensure node-gyp is available
+      - name: Install node-gyp globally
+        run: npm install -g node-gyp
+
       # Clean install of dependencies
       - name: Install dependencies
-        run: |
-          npm cache clean --force
-          npm ci
+        run: npm ci
 
       # Build native addon
       - name: Build native addon
         working-directory: native
         run: |
-          npx node-gyp configure
-          npx node-gyp build
+          node-gyp configure
+          node-gyp build
 
-      # Upload built .node artifacts
+      # Upload built .node files
       - name: Upload native addon
         uses: actions/upload-artifact@v4
         with:
