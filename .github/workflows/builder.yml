@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
-        node: [24]
+        node: [20]
 
     runs-on: ${{ matrix.os }}
 
@@ -17,46 +17,19 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
 
-      # Install build tools
-      - name: Setup build tools (Windows/Linux)
-        if: runner.os == 'Windows'
-        uses: microsoft/setup-msbuild@v1
-
-      - name: Install Python (Windows/Linux)
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.x"
-
-      - name: Install Linux build tools
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential python3 pkg-config
-
-      # Ensure node-gyp is available
-      - name: Install node-gyp globally
-        run: npm install -g node-gyp
-
-      # Clean install of dependencies
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      # Build native addon
       - name: Build native addon
-        working-directory: native
-        run: |
-          node-gyp configure
-          node-gyp build
+        run: npx node-gyp configure build
 
-      # Upload built .node files
-      - name: Upload native addon
+      - name: Upload .node artifact
         uses: actions/upload-artifact@v4
         with:
           name: regex_safe_test-${{ matrix.os }}
-          path: native/build/Release/*.node
+          path: build/Release/*.node
