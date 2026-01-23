@@ -2,7 +2,7 @@
 
 Provide secure alternatives for functions that can be effected by prototype pollution
 
-## StringSplitOnChar
+## StringSplitOnChar (Alternative for String.prototype.split)
 
 #### Prototype
 
@@ -31,7 +31,7 @@ string[] — array of substrings
 1. TypeError if str is not a string
 2. TypeError if delimiter is not a single-character string
 
-## ArraySafeIndexOf
+## ArraySafeIndexOf (Alternative for Array.prototype.indexOf)
 
 #### Prototype
 
@@ -57,7 +57,7 @@ number — index of the element, or -1 if not found
 
 TypeError if arr is not an array
 
-## StringSafeIndexOf
+## StringSafeIndexOf (Alternative for String.prototype.indexOf)
 
 #### Prototype
 

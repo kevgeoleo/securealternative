@@ -1,0 +1,1 @@
+cmd_Release/regex_safe_test.node := ln -f "Release/obj.target/regex_safe_test.node" "Release/regex_safe_test.node" 2>/dev/null || (rm -rf "Release/regex_safe_test.node" && cp -af "Release/obj.target/regex_safe_test.node" "Release/regex_safe_test.node")

@@ -1,0 +1,1 @@
+cmd_Release/obj.target/regex_safe_test.node := g++ -o Release/obj.target/regex_safe_test.node -shared -pthread -rdynamic -m64  -Wl,-soname=regex_safe_test.node -Wl,--start-group Release/obj.target/regex_safe_test/regex_safe_test.o -Wl,--end-group 
