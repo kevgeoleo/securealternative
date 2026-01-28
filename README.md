@@ -122,3 +122,38 @@ boolean — true if the regular expression matches the input string, otherwise f
 1. TypeError if regex is not a RegExp object
 2. TypeError if input is not a string
 3. Error if the native addon is unavailable on the current platform
+
+## ObjectHasOwnProperty (Safe alternative to Object.prototype.hasOwnProperty)
+
+#### Prototype
+
+ObjectHasOwnProperty(obj: object | null | undefined, prop: string | symbol): boolean
+
+#### Description
+
+1. Determines whether an object has a property as its own property, without checking inherited properties.
+2. Does not rely on Object.prototype.hasOwnProperty, making it resistant to prototype pollution and method overrides.
+3. Checks both string and symbol properties.
+4. Safe to use on objects in hostile or partially polluted JavaScript runtimes.
+5. Handles null and undefined safely, returning false instead of throwing.
+
+#### Parameters
+
+| Name   | Type                          | Required | Description                              |
+| ------ | ----------------------------- | -------- | ---------------------------------------- |
+| `obj`  | `object \| null \| undefined` | yes      | The object to inspect                    |
+| `prop` | `string \| symbol`            | yes      | The property name or symbol to check for |
+
+#### Returns
+
+boolean — true if the object has the property as its own property; otherwise false.
+
+#### Throws
+
+None — invalid inputs such as null or undefined are handled safely.
+
+#### Security Considerations
+
+1. Resistant to prototype pollution attacks, such as modifying Object.prototype.hasOwnProperty.
+2. Safe when globals like Object.getOwnPropertyNames or Object.getOwnPropertySymbols are overridden.
+3. Can be safely used in environments where objects or globals may be partially polluted.
